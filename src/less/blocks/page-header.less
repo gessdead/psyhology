@@ -1,0 +1,55 @@
+.page-header {
+  display: block;
+  flex-direction: row;
+  color: @main-color;
+  width: 100%;
+  font-family: @osans;
+  border-bottom: 1px solid @bg-color;
+  position: fixed;
+  top: 0; left: 0;
+  background-color: @white;
+
+  &__inner {
+    padding: @inner;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__logo {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 20px 0;
+    font-size: @h2;
+    span {
+      font-size: 30px;
+      font-weight: 800;
+      border-radius: 50%;
+      background: @bg-color;
+      padding: 5px 12px;
+      color: @white;
+
+      &:hover {
+        border: 2px solid @bg-color;
+        background: @white;
+        color: @bg-color;
+        padding: 4px 10px;
+      }
+    }
+  }
+  &__nav {
+    &-list {
+      display: flex;
+      padding: 35px 0;
+      font-size: @simple-text;
+    }
+    &-item {
+      padding: 0 15px;
+
+      a {
+
+        &:hover {
+          border-bottom: 1px solid @main-color;
+        }
+      }
+    }
+  }
+}
