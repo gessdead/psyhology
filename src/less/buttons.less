@@ -4,11 +4,30 @@
   background-color: @second-color;
   border-radius: 30px;
   color: @white;
+  transition: ease-in-out all 400ms;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  &:hover {
+    background-color: @drkn-second-color;
+  }
 
   &--arrow {
     &:after {
       content: '→';
       padding: 0 5px;
+    }
+  }
+
+  &--transparent {
+    background-color: @white;
+    padding: 8px 38px;
+    border: 2px solid @second-color;
+    color: @second-color;
+
+    &:hover {
+      border: 2px solid @drkn-second-color;
+      color: @white;
     }
   }
 }
