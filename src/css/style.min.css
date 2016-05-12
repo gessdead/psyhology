@@ -77,10 +77,12 @@ h3 {
 .page-header__logo span {
   font-size: 30px;
   font-weight: 800;
+  border: 2px solid #65AAE0;
   border-radius: 50%;
   background: #65AAE0;
-  padding: 5px 12px;
+  padding: 4px 10px;
   color: #fff;
+  transition: ease-in-out all 400ms;
 }
 .page-header__logo span:hover {
   border: 2px solid #65AAE0;
