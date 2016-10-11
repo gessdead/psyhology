@@ -10,10 +10,9 @@ const mqpacker = require('css-mqpacker');
 const cleanss = require('gulp-cleancss');
 const sourcemaps = require('gulp-sourcemaps');
 const htmlhint = require('gulp-htmlhint');
-const livereload = require('gulp-livereload');
-const connect = require('gulp-connect');
 const uglify = require('gulp-uglify');
-const jsmin = require('gulp-jsmin');
+const browserSync = require('browser-sync').create();
+const ghPages = require('gulp-gh-pages');
 
 //проверка html кода
 gulp.task('htmlhint', function() {
@@ -23,6 +22,7 @@ gulp.task('htmlhint', function() {
       }))
     .pipe(htmlhint.reporter());
 });
+
 // Компиляция LESS
 gulp.task('less', function () {
   return gulp.src('./src/less/style.less')
@@ -34,16 +34,8 @@ gulp.task('less', function () {
     ]))
     .pipe(rename('style.min.css'))
     .pipe(gulp.dest('./src/css'))
-    //.pipe(livereload());
+    .pipe(browserSync.stream());
 });
-//склейка и минификакия скриптов
-//gulp.task('script', function(){
-//  return gulp.src('./src/js/*.js')
-//    .pipe(concat('all.js'))
-//    .pipe(jsmin())
-//    .pipe(rename('all.min.js'))
-//    .pipe(gulp.dest('./src/js'));
-//  });
 
 //собиратель в билд
 gulp.task('build', function(){
@@ -51,8 +43,8 @@ gulp.task('build', function(){
     .pipe(cleanss())
     .pipe(rename('style.min.css'))
     .pipe(gulp.dest('./build/css'));
-  gulp.src('./src/html/*.html')
-    .pipe(gulp.dest('./build/html'));
+  gulp.src('./src/*.html')
+    .pipe(gulp.dest('./build/'));
   gulp.src('./src/imgs/**/*.*')
     .pipe(gulp.dest('./build/imgs'));
   gulp.src('./src/js/*.js')
@@ -60,17 +52,26 @@ gulp.task('build', function(){
     .pipe(gulp.dest('./build/js'));
   gulp.src('./src/svg/*.svg')
     .pipe(gulp.dest('./build/svg'));
-  });
-
-//поднятие сервера
-gulp.task('connect', function() {
-  connect.server({
-    //root: 'src/html',
-    livereload: true
-    });
 });
 
-// Вотчер 
-gulp.task('watch', function() {
-    gulp.watch('src/less/**/*.less', ['less']);
+// деплоер на github.io
+gulp.task('deploy', function() {
+  return gulp.src('./build/**/*')
+    .pipe(ghPages());
+});
+
+gulp.task('clear', function() {
+  return gulp.src('build/**')
+    .pipe(clean({force:true}));
+});
+
+// запуск браузерсинка + компилятора less
+gulp.task('serve', ['less'], function(){
+  browserSync.init({
+    server: "./src/html/"
     });
+  //следим за файлами, выполняем задачу less
+  gulp.watch('src/less/**/*.less', ['less']);
+  gulp.watch('src/js/**/*.js').on('change', browserSync.reload);
+  gulp.watch('src/*.html').on('change', browserSync.reload);
+});
